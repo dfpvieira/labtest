@@ -168,11 +168,9 @@ public class Arena {
     }
 
     public void verifyWin(){
-        for (Material material: materials) {
-            if (materials.size() == 0)
+        for (Material material: materials)
+            if (materials.size()==0)
                 System.out.println("you won! :D");
-                List<String> maps = new ArrayList<>(Arrays.asList("files/level2.txt")); //n sei se funciona
-        }
     }
 
 
