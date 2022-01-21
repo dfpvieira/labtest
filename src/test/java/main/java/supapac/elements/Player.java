@@ -8,6 +8,7 @@ import supapac.Position;
 import supapac.elements.Element;
 
 public class Player extends Element {
+    private int lives=3;
 
     public Player(int x, int y) {
         super(x,y) ;
@@ -35,4 +36,5 @@ public class Player extends Element {
             graphics.enableModifiers(SGR.BOLD);
             graphics.putString(new TerminalPosition(super.getPosition().getX(), super.getPosition().getY()), "X");
         }
+
     }

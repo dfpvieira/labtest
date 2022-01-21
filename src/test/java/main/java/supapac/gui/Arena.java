@@ -24,6 +24,7 @@ public class Arena {
     private int height;
     private int width;
     private int lives =3;
+    private int portnumber = 10;
     private boolean dead= false;
     private Player player;
     private List<walls> Walls;
@@ -33,9 +34,8 @@ public class Arena {
     private List<Bomb>bombs;
     private int level = 0;
     String filePath = new File("").getAbsolutePath();
-    public int a = 3;
 
-    private List<String> maps = new ArrayList<>(Arrays.asList(chooseLevel(a))); //mudar consoante o nivel
+    private List<String> maps = new ArrayList<>(Arrays.asList("files/level3.txt")); //mudar consoante o nivel
 
     public Arena(int width, int height) {
         this.height = height;
@@ -85,7 +85,19 @@ public class Arena {
         }
     }
 
-
+    public void processKey(KeyStroke key, Screen screen) throws IOException {
+        if(key == null) return;
+        if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') screen.close();
+        if (key.getKeyType() == KeyType.ArrowLeft) movePlayer(player.moveLeft());
+        if (key.getKeyType() == KeyType.ArrowRight) movePlayer(player.moveRight());
+        if (key.getKeyType() == KeyType.ArrowUp) movePlayer(player.moveUp());
+        if (key.getKeyType() == KeyType.ArrowDown) movePlayer(player.moveDown());
+        moveMonsters();
+        moveBombs();
+        verifyWin();
+        verifyBombCollisions();
+        verifyMonsterCollisions();
+    }
 
     private boolean canPlayerMove(Position position) {
         for (Material material : materials) {
@@ -152,7 +164,7 @@ public class Arena {
             if(monster.getPosition().equals(player.getPosition())){
                 lives--;
                 System.out.println("Lives = " + lives);
-                if(lives <= 0) dead = true;
+                if(lives<= 0) dead = true;
             }
         }
     }
@@ -168,30 +180,26 @@ public class Arena {
         return dead;
     }
 
+    private void LostGame(TextGraphics graphics) {
+        graphics.setBackgroundColor(TextColor.Factory.fromString("#FE5959"));
+        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width * 2, height * 2 + 3), ' ');
+        graphics.setForegroundColor(TextColor.Factory.fromString("#ffffff"));
+        graphics.putString(new TerminalPosition(19, 14), "YOU LOST ;(");
+    }
+
     public void verifyWin(){
-        for (Material material: materials)
-            if (materials.size()==0)
+        for (Material material: materials) {
+            if (materials.size() == 0)
                 System.out.println("you won! :D");
+                List<String> maps = new ArrayList<>(Arrays.asList("files/level2.txt")); //n sei se funciona
+        }
     }
 
 
-    public void processKey(KeyStroke key, Screen screen) throws IOException {
-        if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') screen.close();
-        if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'k') Killcommad();
-        if (key.getKeyType() == KeyType.ArrowLeft) movePlayer(player.moveLeft());
-        if (key.getKeyType() == KeyType.ArrowRight) movePlayer(player.moveRight());
-        if (key.getKeyType() == KeyType.ArrowUp) movePlayer(player.moveUp());
-        if (key.getKeyType() == KeyType.ArrowDown) movePlayer(player.moveDown());
-        moveMonsters();
-        moveBombs();
-        verifyWin();
-        verifyBombCollisions();
-        verifyMonsterCollisions();
-    }
 
     public void draw(TextGraphics graphics) {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#000000")); //cor do background
-        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
+        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height ), ' ');
 
         for (Material material : materials)
             material.draw(graphics);
@@ -209,19 +217,7 @@ public class Arena {
 
         for (Bomb bombdead: bombs)
             bombdead.draw(graphics);
-    }
 
-    private void Killcommad() throws IOException{
-        this.dead = true;
-    }
-
-    public void setA(int a) {
-        this.a = a;
-    }
-
-    public String chooseLevel(int a) {
-        if(a == 1) return "files/level1.txt";
-        if(a == 2) return "files/level2.txt";
-        return "files/level3.txt";
+        if (dead==true) LostGame(graphics);
     }
 }
