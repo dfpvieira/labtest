@@ -13,6 +13,9 @@ import com.googlecode.lanterna.terminal.Terminal;
 import supapac.gui.Arena;
 
 import java.io.IOException;
+
+import static com.googlecode.lanterna.input.KeyType.*;
+
 public class Game {
     private Screen screen;
     int x = 50;
@@ -26,8 +29,37 @@ public class Game {
             Terminal terminal = terminalFactory.createTerminal();
             screen = new TerminalScreen(terminal);
             screen.setCursorPosition(null); // we don't need a cursor
+
+            TextGraphics tg = screen.newTextGraphics();
+
             screen.startScreen(); // screens must be started
+
+            int x = 2;
+            int y = 8;
+            tg.putString(x, y,   "  ####  #   #  ####  ####   ####  ####  ####");
+            tg.putString(x, ++y, "  #     #   #  #  #  #  #   #  #  #  #  #   ");
+            tg.putString(x, ++y, "  ####  #   #  ####  ####   ####  ####  #   ");
+            tg.putString(x, ++y, "     #  #   #  #     #  #   #     #  #  #   ");
+            tg.putString(x, ++y, "  ####  #####  #     #  #   #     #  #  ####");
+
+            y = y + 2;
+
+            tg.putString(x, ++y, "  ..........................................");
+
+            y = y + 2;
+
+            tg.putString(x, ++y, "  Press 'S' to Start Raging!\n");
+
+            y++;
+
+            tg.putString(x, ++y, "  Press 'Q' Only in Case of Emergency\n");
+
             screen.doResizeIfNecessary(); // resize screen if necessary
+
+            screen.refresh();
+
+            screen.readInput();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,7 +81,7 @@ public class Game {
             arena.draw(screen.newTextGraphics());
             screen.refresh();
             KeyStroke key = screen.readInput();
-            if(key.getKeyType() == KeyType.EOF) break;
+            if(key.getKeyType() == EOF) break;
             processKey(key);
             if(arena.getDead()){
                 System.out.println("You lost :(");
@@ -73,8 +105,8 @@ public class Game {
         KeyStroke key = screen.readInput();
 
         if(key != null) {
-            if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') screen.close();
-            if (key.getKeyType() == KeyType.Character && key.getCharacter() == 's') run();
+            if (key.getKeyType() == Character && key.getCharacter() == 'q') screen.close();
+            if (key.getKeyType() == Character && key.getCharacter() == 's') run();
         }
     }
     
