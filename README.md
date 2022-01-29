@@ -35,9 +35,6 @@ The player always starts with 3 lives.
 ### Menus
 An initial menu allowing the user the start or change levels, and quit the game.
 
-### Restart
-The player can restart the model.level by pressing a certain key.
-
 ### Gates
 a block that lets the player pass in one direction while blocking him if he atempts in another direction, 
 almost like a door that only opens from one side.
@@ -53,7 +50,10 @@ Differents Levels increasing the model.level of difficulty by adding "objects" t
 
 ### Singleton
 The supapac.gui.Arena class is instanciated only once, which manages and processes all supapac.Game related elements and functions.
-
+###  Factory Pattern
+In this case the supapac.gui.Arena acts as a superclass, while having multiple sub-classes.
+### Composite Pattern
+### Flyweight Pattern
 
 ## Code Smells
 
