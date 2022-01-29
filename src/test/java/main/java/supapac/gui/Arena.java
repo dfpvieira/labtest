@@ -1,4 +1,4 @@
-package supapac.gui;
+package main.java.supapac.gui;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
@@ -7,8 +7,8 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
-import supapac.Position;
-import supapac.elements.*;
+import main.java.supapac.Position;
+import main.java.supapac.elements.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -33,6 +33,7 @@ public class Arena {
     private List<Portals>portals;
     private List<Bomb>bombs;
     private int level = 0;
+    private boolean verified;
     String filePath = new File("").getAbsolutePath();
 
     private List<String> maps = new ArrayList<>(Arrays.asList("files/level3.txt")); //mudar consoante o nivel
@@ -168,6 +169,12 @@ public class Arena {
             }
         }
     }
+
+    public int getLives() {
+        verifyMonsterCollisions();
+        return lives;
+    }
+
     public void verifyBombCollisions() {
         for (Bomb bombdead : bombs){
             if(bombdead.getPosition().equals(player.getPosition())){
@@ -191,11 +198,15 @@ public class Arena {
         for (Material material: materials) {
             if (materials.size() == 0)
                 System.out.println("you won! :D");
-                List<String> maps = new ArrayList<>(Arrays.asList("files/level2.txt")); //n sei se funciona
+                List<String> maps = new ArrayList<>(Arrays.asList("files/level2.txt"));//n sei se funciona
+                boolean verified = true;
         }
     }
 
-
+    public boolean getVerified() {
+        verifyWin();
+        return verified;
+    }
 
     public void draw(TextGraphics graphics) {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#000000")); //cor do background
@@ -219,5 +230,13 @@ public class Arena {
             bombdead.draw(graphics);
 
         if (dead==true) LostGame(graphics);
+    }
+
+    public void setPlayer(Player p) {
+        this.player = p;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }
