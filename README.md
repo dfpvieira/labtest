@@ -52,8 +52,8 @@ Differents Levels increasing the model.level of difficulty by adding "objects" t
 The supapac.gui.Arena class is instanciated only once, which manages and processes all supapac.Game related elements and functions.
 ###  Factory Pattern
 In this case the supapac.gui.Arena acts as a superclass, while having multiple sub-classes.
-### Composite Pattern
 ### Flyweight Pattern
+For our project this pattern is very useful, seeing that we use lots of objects
 
 ## Code Smells
 
